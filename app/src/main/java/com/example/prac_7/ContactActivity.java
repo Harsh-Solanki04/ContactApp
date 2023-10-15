@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+
 public class ContactActivity extends AppCompatActivity {
     private EditText enterName;
     private EditText enterPhone;
@@ -19,6 +21,8 @@ public class ContactActivity extends AppCompatActivity {
     private Button updateButton;
     private Button deleteButton;
     private Button capturePhotoButton;
+    private byte[] photoByteArray;
+    private Bitmap photoBitmap;
     private ImageView contactPhotoImageView;
     private ContactModel contact;
     private DatabaseHelper databaseHelper;
@@ -65,7 +69,12 @@ public class ContactActivity extends AppCompatActivity {
                     contact.setName(name);
                     contact.setPhone(phone);
                     contact.setEmail(email);
-
+                    if(photoBitmap!=null){
+                        ByteArrayOutputStream stream=new ByteArrayOutputStream();
+                        photoBitmap.compress(Bitmap.CompressFormat.PNG,100,stream);
+                        photoByteArray=stream.toByteArray();
+                    }
+                    contact.setPhoto(photoByteArray);
                     databaseHelper.updateContact(contact);
 
                     Intent intent = new Intent(ContactActivity.this, MainActivity5.class);
@@ -93,6 +102,11 @@ public class ContactActivity extends AppCompatActivity {
         if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
             // Handle the captured photo
             Bundle extras = data.getExtras();
+            photoBitmap=(Bitmap)extras.get("data");
+            if(photoBitmap!=null){
+                contactPhotoImageView.setImageBitmap(photoBitmap);
+            }
+            /*
             if (extras != null) {
                 Bitmap photo = (Bitmap) extras.get("data");
                 if (photo != null) {
@@ -100,6 +114,7 @@ public class ContactActivity extends AppCompatActivity {
                     contactPhotoImageView.setImageBitmap(photo);
                 }
             }
+            */
         }
     }
 }
