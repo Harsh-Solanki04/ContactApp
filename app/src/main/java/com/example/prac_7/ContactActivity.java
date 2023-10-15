@@ -105,6 +105,9 @@ public class ContactActivity extends AppCompatActivity {
             photoBitmap=(Bitmap)extras.get("data");
             if(photoBitmap!=null){
                 contactPhotoImageView.setImageBitmap(photoBitmap);
+                ByteArrayOutputStream stream=new ByteArrayOutputStream();
+                photoBitmap.compress(Bitmap.CompressFormat.PNG,100,stream);
+                photoByteArray=stream.toByteArray();
             }
             /*
             if (extras != null) {
