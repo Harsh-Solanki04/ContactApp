@@ -104,7 +104,7 @@ public class MainMenu extends Fragment {
         database.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getActivity(),MainActivity3.class);
+                Intent intent=new Intent(getActivity(),MainActivity5.class);
                 startActivity(intent);
             }
         });
